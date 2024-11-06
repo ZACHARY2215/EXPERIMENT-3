@@ -1,20 +1,36 @@
-using System;
-using System.Data;
-using System.Data.SqlClient;
-using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
+using System.Data;
+using System.Windows.Forms;
 
-namespace BALAMAN_IT201_CRUD_DEMO_08
+namespace BAUTISTA_DAMALERIO_JIMENEZ_IT201_CRUD_DEMO_08
 {
     public partial class Form1 : Form
     {
-        private SqlConnection connection;  //= new SqlConnection("Data Source=localhost\\SQLEXPRESS;Initial Catalog=BALAMAN_IT201_CRUD_DEMO_08;Integrated Security=True;Trust Server Certificate=True");
+        private SqlConnection connection = new SqlConnection("Data Source=localhost\\SQLEXPRESS;Initial Catalog=bautistadamaleriojimenez_database;Integrated Security=True;Trust Server Certificate=True");
+        private Theme currentTheme;
 
 
         public Form1()
         {
+
+            currentTheme = LightTheme;
             InitializeComponent();
             LoadVehicles();
+            ApplyTheme(currentTheme);
+
+
+
+            ToggleTheme1.Click += (s, e) => ToggleTheme();
+        }
+
+        private void InitializeThemetoggleButton()
+        {
+            ToggleTheme1.Text = "Toggle Theme";
+            ToggleTheme1.BackColor = Color.LightGray;
+            ToggleTheme1.ForeColor = Color.Black;
+            ToggleTheme1.Location = new Point(842, 16);
+            ToggleTheme1.Click += (s, e) => ToggleTheme();
+            this.Controls.Add(ToggleTheme1);
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -27,6 +43,18 @@ namespace BALAMAN_IT201_CRUD_DEMO_08
 
         }
 
+        //private void LoadVehicles()
+        //{
+        //    SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM Vehicles", connection);
+        //    DataTable table = new DataTable();
+        //    adapter.Fill(table);
+        //    dataGridView1.DataSource = table;
+
+        //    DataGridViewImageColumn dGVImageColumn = (DataGridViewImageColumn)dataGridView1.Columns[8];
+        //    dGVImageColumn.ImageLayout = DataGridViewImageCellLayout.Stretch;
+
+        //}
+
         private void LoadVehicles()
         {
             //SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM Vehicles", connection);
@@ -36,6 +64,31 @@ namespace BALAMAN_IT201_CRUD_DEMO_08
 
             //DataGridViewImageColumn dGVImageColumn = (DataGridViewImageColumn)dataGridView1.Columns[8];
             //dGVImageColumn.ImageLayout = DataGridViewImageCellLayout.Stretch;
+
+            try
+            {
+                using (SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM Vehicles", connection))
+                {
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+                    dataGridView1.DataSource = table;
+
+                    if (dataGridView1.Columns.Contains("Image"))
+                    {
+                        DataGridViewImageColumn dGVImageColumn = (DataGridViewImageColumn)dataGridView1.Columns["Image"];
+                        dGVImageColumn.ImageLayout = DataGridViewImageCellLayout.Stretch;
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading vehicles" + ex.Message);
+            }
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
 
         }
 
@@ -50,13 +103,13 @@ namespace BALAMAN_IT201_CRUD_DEMO_08
 
                 SqlCommand cmd = new SqlCommand("INSERT INTO Vehicles (Make, Model, Year, Price, IsElectric, Color, CreatedDate) VALUES (@Make, @Model, @Year, @Price, @IsElectric, @Color, @CreatedDate)", connection);
 
-                cmd.Parameters.AddWithValue("@Make", txtMake.Text);
-                cmd.Parameters.AddWithValue("@Model", txtModel.Text);
-                cmd.Parameters.AddWithValue("@Year", int.Parse(txtYear.Text));
-                cmd.Parameters.AddWithValue("@Price", decimal.Parse(txtPrice.Text));
-                cmd.Parameters.AddWithValue("@IsElectric", chkIsElectric.Checked);
-                cmd.Parameters.AddWithValue("@Color", txtColor.Text);
-                cmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
+                cmd.Parameters.Add("@Make", SqlDbType.NVarChar).Value = txtMake.Text;
+                cmd.Parameters.Add("@Model", SqlDbType.NVarChar).Value = txtModel.Text;
+                cmd.Parameters.Add("@Year", SqlDbType.Int).Value = int.Parse(txtYear.Text);
+                cmd.Parameters.Add("@Price", SqlDbType.Decimal).Value = decimal.Parse(txtPrice.Text);
+                cmd.Parameters.Add("@IsElectric", SqlDbType.Bit).Value = chkIsElectric.Checked;
+                cmd.Parameters.Add("@Color", SqlDbType.NVarChar).Value = txtColor.Text;
+                cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = DateTime.Now;
 
                 connection.Open();
                 cmd.ExecuteNonQuery();
@@ -65,9 +118,9 @@ namespace BALAMAN_IT201_CRUD_DEMO_08
 
                 MessageBox.Show("New vehicle created!");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("Fill out the forms properly!");
+                MessageBox.Show("Error adding vehicle: " + ex.Message);
             }
         }
 
@@ -86,13 +139,16 @@ namespace BALAMAN_IT201_CRUD_DEMO_08
             {
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
 
-                // Populate the textboxes with the selected row data
-                txtMake.Text = row.Cells["Make"].Value.ToString();
-                txtModel.Text = row.Cells["Model"].Value.ToString();
-                txtYear.Text = row.Cells["Year"].Value.ToString();
-                txtPrice.Text = row.Cells["Price"].Value.ToString();
-                chkIsElectric.Checked = (bool)row.Cells["IsElectric"].Value;
-                txtColor.Text = row.Cells["Color"].Value.ToString();
+                // Populate the textboxes with the selected row data, handling DBNull values
+                txtMake.Text = row.Cells["Make"].Value?.ToString() ?? string.Empty;
+                txtModel.Text = row.Cells["Model"].Value?.ToString() ?? string.Empty;
+                txtYear.Text = row.Cells["Year"].Value?.ToString() ?? string.Empty;
+                txtPrice.Text = row.Cells["Price"].Value?.ToString() ?? string.Empty;
+
+                // Check if "IsElectric" cell has a value and set the checkbox accordingly
+                chkIsElectric.Checked = row.Cells["IsElectric"].Value != DBNull.Value && (bool)row.Cells["IsElectric"].Value;
+
+                txtColor.Text = row.Cells["Color"].Value?.ToString() ?? string.Empty;
 
                 // Set the PictureBox Image Placeholder
                 if (row.Cells["Image"].Value != DBNull.Value && row.Cells["Image"].Value != null)
@@ -105,12 +161,19 @@ namespace BALAMAN_IT201_CRUD_DEMO_08
                     picVehicleImage.Image = null; // Clear the PictureBox
                 }
 
-                // Set the CreatedDate TextBox
-                DateTime createdDate = (DateTime)row.Cells["CreatedDate"].Value;
-                dateTimePicker1.Text = createdDate.ToString("yyyy-MM-dd HH:mm:ss"); // Format as needed
-
+                // Set the CreatedDate TextBox, handling DBNull values
+                if (row.Cells["CreatedDate"].Value != DBNull.Value && row.Cells["CreatedDate"].Value != null)
+                {
+                    DateTime createdDate = (DateTime)row.Cells["CreatedDate"].Value;
+                    dateTimePicker1.Text = createdDate.ToString("yyyy-MM-dd HH:mm:ss"); // Format as needed
+                }
+                else
+                {
+                    dateTimePicker1.Text = string.Empty; // Clear the DateTimePicker if no date is present
+                }
             }
         }
+
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
@@ -181,43 +244,85 @@ namespace BALAMAN_IT201_CRUD_DEMO_08
                 return;
             }
 
-            // Ensure a row is selected in the DataGridView
+        //    // Ensure a row is selected in the DataGridView
+        //    if (dataGridView1.SelectedRows.Count > 0)
+        //    {
+        //        // Get the VehicleID of the selected row
+        //        int vehicleId = (int)dataGridView1.SelectedRows[0].Cells["VehicleID"].Value;
+
+        //        // Prepare the SQL command to delete the vehicle
+        //        string query = "DELETE FROM Vehicles WHERE VehicleID = @VehicleID";
+
+        //        using (SqlCommand cmd = new SqlCommand(query, connection))
+        //        {
+        //            // Add parameter to the command
+        //            cmd.Parameters.AddWithValue("@VehicleID", vehicleId);
+
+        //            try
+        //            {
+        //                // Open connection and execute the command
+        //                connection.Open();
+        //                cmd.ExecuteNonQuery();
+        //                MessageBox.Show("Vehicle deleted successfully!");
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                MessageBox.Show("Error deleting vehicle: " + ex.Message);
+        //            }
+        //            finally
+        //            {
+        //                connection.Close(); // Ensure the connection is closed
+        //            }
+        //        }
+
+        //        // Reload the data to reflect changes
+        //        LoadVehicles();
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Please select a vehicle to delete.");
+        //    }
+        }
+
+        private void btnDelete_Click_1(object sender, EventArgs e)
+        {
             if (dataGridView1.SelectedRows.Count > 0)
             {
-                // Get the VehicleID of the selected row
-                int vehicleId = (int)dataGridView1.SelectedRows[0].Cells["VehicleID"].Value;
+                DialogResult result = MessageBox.Show("Are you sure you want to delete this vehicle?",
+                    "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
-                // Prepare the SQL command to delete the vehicle
-                string query = "DELETE FROM Vehicles WHERE VehicleID = @VehicleID";
-
-                using (SqlCommand cmd = new SqlCommand(query, connection))
+                if (result == DialogResult.Yes)
                 {
-                    // Add parameter to the command
-                    cmd.Parameters.AddWithValue("@VehicleID", vehicleId);
+                    int vehicleId = (int)dataGridView1.SelectedRows[0].Cells["VehicleID"].Value;
 
-                    try
+                    string query = "DELETE FROM Vehicles WHERE VehicleID = @VehicleID";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
-                        // Open connection and execute the command
-                        connection.Open();
-                        cmd.ExecuteNonQuery();
-                        MessageBox.Show("Vehicle deleted successfully!");
+                        cmd.Parameters.AddWithValue("@VehicleID", vehicleId);
+
+                        try
+                        {
+                            connection.Open();
+                            cmd.ExecuteNonQuery();
+                            MessageBox.Show("Vehicle deleted successfully!");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Error delete vehicle: " + ex.Message);
+                        }
+                        finally
+                        {
+                            connection.Close();
+                        }
+
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Error deleting vehicle: " + ex.Message);
-                    }
-                    finally
-                    {
-                        connection.Close(); // Ensure the connection is closed
-                    }
+                    LoadVehicles();
                 }
-
-                // Reload the data to reflect changes
-                LoadVehicles();
             }
             else
             {
-                MessageBox.Show("Please select a vehicle to delete.");
+                MessageBox.Show("Please select a vehicle to delete. ");
             }
         }
 
@@ -286,6 +391,81 @@ namespace BALAMAN_IT201_CRUD_DEMO_08
         private void txtPrice_Click(object sender, EventArgs e)
         {
             txtPrice.SelectionStart = 0;
+        }
+
+        private void picVehicleImage_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ClearFields()
+        {
+            txtMake.Clear();
+            txtModel.Clear();
+            txtYear.Clear();
+            txtPrice.Clear();
+            chkIsElectric.Checked = false;
+            txtColor.Clear();
+            dateTimePicker1.Value = DateTime.Now;
+            picVehicleImage.Image = null;
+
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            ClearFields();
+        }
+
+        public class Theme
+        {
+            public Color BackGroundColor { get; set; }
+            public Color ButtonBackColor { get; set; }
+            public Color ButtonTextColor { get; set; }
+            public Color TextColor { get; set; }
+        }
+
+        public Theme LightTheme = new Theme()
+        {
+            BackGroundColor = Color.White,
+            ButtonBackColor = Color.LightGray,
+            ButtonTextColor = Color.Black,
+            TextColor = Color.Black,
+        };
+
+        public Theme DarkTheme = new Theme()
+        {
+            BackGroundColor = Color.FromArgb(30, 30, 30),
+            ButtonBackColor = Color.Gray,
+            ButtonTextColor = Color.White,
+            TextColor = Color.White,
+        };
+
+        public void ApplyTheme(Theme theme)
+        {
+            this.BackColor = theme.BackGroundColor;
+            foreach (Control control in this.Controls)
+            {
+                if (control is Button button)
+                {
+                    button.BackColor = theme.ButtonBackColor;
+                    button.ForeColor = theme.ButtonTextColor;
+                }
+                else if (control is Label || control is TextBox || control is DataGridView)
+                {
+                    control.ForeColor = theme.TextColor;
+                    control.BackColor = theme.BackGroundColor;
+                }
+            }
+
+            dataGridView1.BackgroundColor = theme.BackGroundColor;
+            dataGridView1.DefaultCellStyle.BackColor = theme.BackGroundColor;
+            dataGridView1.DefaultCellStyle.ForeColor = theme.TextColor;
+        }
+
+        private void ToggleTheme()
+        {
+            currentTheme = currentTheme == LightTheme ? DarkTheme : LightTheme;
+            ApplyTheme(currentTheme);
         }
     }
 }
