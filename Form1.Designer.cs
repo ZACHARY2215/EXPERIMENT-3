@@ -39,9 +39,7 @@
             txtModel = new TextBox();
             fileSystemWatcher1 = new FileSystemWatcher();
             label3 = new Label();
-            txtYear = new TextBox();
             label4 = new Label();
-            txtPrice = new TextBox();
             chkIsElectric = new CheckBox();
             label5 = new Label();
             txtColor = new TextBox();
@@ -52,6 +50,9 @@
             picVehicleImage = new PictureBox();
             btnBrowseImage = new Button();
             pictureBox1 = new PictureBox();
+            txtYear = new MaskedTextBox();
+            btnAbout = new Button();
+            txtPrice = new MaskedTextBox();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)fileSystemWatcher1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picVehicleImage).BeginInit();
@@ -154,13 +155,6 @@
             label3.TabIndex = 10;
             label3.Text = "Year";
             // 
-            // txtYear
-            // 
-            txtYear.Location = new Point(140, 448);
-            txtYear.Name = "txtYear";
-            txtYear.Size = new Size(100, 23);
-            txtYear.TabIndex = 9;
-            // 
             // label4
             // 
             label4.AutoSize = true;
@@ -169,13 +163,6 @@
             label4.Size = new Size(33, 15);
             label4.TabIndex = 12;
             label4.Text = "Price";
-            // 
-            // txtPrice
-            // 
-            txtPrice.Location = new Point(364, 365);
-            txtPrice.Name = "txtPrice";
-            txtPrice.Size = new Size(100, 23);
-            txtPrice.TabIndex = 11;
             // 
             // chkIsElectric
             // 
@@ -269,11 +256,46 @@
             pictureBox1.TabIndex = 22;
             pictureBox1.TabStop = false;
             // 
+            // txtYear
+            // 
+            txtYear.Location = new Point(140, 448);
+            txtYear.Mask = "99999";
+            txtYear.Name = "txtYear";
+            txtYear.PromptChar = ' ';
+            txtYear.Size = new Size(100, 23);
+            txtYear.TabIndex = 23;
+            txtYear.ValidatingType = typeof(int);
+            txtYear.Click += txtYear_Click;
+            // 
+            // btnAbout
+            // 
+            btnAbout.Location = new Point(891, 5);
+            btnAbout.Name = "btnAbout";
+            btnAbout.Size = new Size(106, 37);
+            btnAbout.TabIndex = 24;
+            btnAbout.Text = "About Us";
+            btnAbout.UseVisualStyleBackColor = true;
+            btnAbout.Click += btnAbout_Click;
+            // 
+            // txtPrice
+            // 
+            txtPrice.Location = new Point(364, 365);
+            txtPrice.Mask = "99999";
+            txtPrice.Name = "txtPrice";
+            txtPrice.PromptChar = ' ';
+            txtPrice.Size = new Size(100, 23);
+            txtPrice.TabIndex = 25;
+            txtPrice.ValidatingType = typeof(int);
+            txtPrice.Click += txtPrice_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1009, 514);
+            Controls.Add(txtPrice);
+            Controls.Add(btnAbout);
+            Controls.Add(txtYear);
             Controls.Add(pictureBox1);
             Controls.Add(btnBrowseImage);
             Controls.Add(picVehicleImage);
@@ -285,9 +307,7 @@
             Controls.Add(txtColor);
             Controls.Add(chkIsElectric);
             Controls.Add(label4);
-            Controls.Add(txtPrice);
             Controls.Add(label3);
-            Controls.Add(txtYear);
             Controls.Add(label2);
             Controls.Add(txtModel);
             Controls.Add(label1);
@@ -324,9 +344,7 @@
         private FileSystemWatcher fileSystemWatcher1;
         private CheckBox chkIsElectric;
         private Label label4;
-        private TextBox txtPrice;
         private Label label3;
-        private TextBox txtYear;
         private Label label6;
         private DateTimePicker dateTimePicker1;
         private Label label5;
@@ -336,5 +354,8 @@
         private Button btnBrowseImage;
         private PictureBox picVehicleImage;
         private PictureBox pictureBox1;
+        private MaskedTextBox txtYear;
+        private Button btnAbout;
+        private MaskedTextBox txtPrice;
     }
 }

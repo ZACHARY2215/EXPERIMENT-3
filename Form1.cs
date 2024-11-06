@@ -8,7 +8,7 @@ namespace BALAMAN_IT201_CRUD_DEMO_08
 {
     public partial class Form1 : Form
     {
-        private SqlConnection connection = new SqlConnection("Data Source=localhost\\SQLEXPRESS;Initial Catalog=BALAMAN_IT201_CRUD_DEMO_08;Integrated Security=True;Trust Server Certificate=True");
+        private SqlConnection connection;  //= new SqlConnection("Data Source=localhost\\SQLEXPRESS;Initial Catalog=BALAMAN_IT201_CRUD_DEMO_08;Integrated Security=True;Trust Server Certificate=True");
 
 
         public Form1()
@@ -29,18 +29,13 @@ namespace BALAMAN_IT201_CRUD_DEMO_08
 
         private void LoadVehicles()
         {
-            SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM Vehicles", connection);
-            DataTable table = new DataTable();
-            adapter.Fill(table);
-            dataGridView1.DataSource = table;
+            //SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM Vehicles", connection);
+            //DataTable table = new DataTable();
+            //adapter.Fill(table);
+            //dataGridView1.DataSource = table;
 
-            DataGridViewImageColumn dGVImageColumn = (DataGridViewImageColumn)dataGridView1.Columns[8];
-            dGVImageColumn.ImageLayout = DataGridViewImageCellLayout.Stretch;
-
-        }
-
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
+            //DataGridViewImageColumn dGVImageColumn = (DataGridViewImageColumn)dataGridView1.Columns[8];
+            //dGVImageColumn.ImageLayout = DataGridViewImageCellLayout.Stretch;
 
         }
 
@@ -48,6 +43,11 @@ namespace BALAMAN_IT201_CRUD_DEMO_08
         {
             try
             {
+                if (txtMake.Text.Length == 0 || txtModel.Text.Length == 0)
+                {
+                    throw new Exception();
+                }
+
                 SqlCommand cmd = new SqlCommand("INSERT INTO Vehicles (Make, Model, Year, Price, IsElectric, Color, CreatedDate) VALUES (@Make, @Model, @Year, @Price, @IsElectric, @Color, @CreatedDate)", connection);
 
                 cmd.Parameters.AddWithValue("@Make", txtMake.Text);
@@ -171,14 +171,16 @@ namespace BALAMAN_IT201_CRUD_DEMO_08
             }
         }
 
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-
-
-        }
-
         private void btnDelete_Click_1(object sender, EventArgs e)
         {
+            if (
+                MessageBox.Show("Are you sure you want to delete this record?", "Confirm", MessageBoxButtons.OKCancel)
+                == DialogResult.Cancel
+               )
+            {
+                return;
+            }
+
             // Ensure a row is selected in the DataGridView
             if (dataGridView1.SelectedRows.Count > 0)
             {
@@ -266,6 +268,24 @@ namespace BALAMAN_IT201_CRUD_DEMO_08
                     picVehicleImage.Image = new Bitmap(openFileDialog.FileName);
                 }
             }
+        }
+
+        private void txtYear_Click(object sender, EventArgs e)
+        {
+            txtYear.SelectionStart = 0;
+        }
+
+        private void btnAbout_Click(object sender, EventArgs e)
+        {
+            using (AboutUs ab = new())
+            {
+                ab.ShowDialog();
+            }
+        }
+
+        private void txtPrice_Click(object sender, EventArgs e)
+        {
+            txtPrice.SelectionStart = 0;
         }
     }
 }
