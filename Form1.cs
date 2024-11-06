@@ -57,6 +57,14 @@ namespace BAUTISTA_DAMALERIO_JIMENEZ_IT201_CRUD_DEMO_08
 
         private void LoadVehicles()
         {
+            //SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM Vehicles", connection);
+            //DataTable table = new DataTable();
+            //adapter.Fill(table);
+            //dataGridView1.DataSource = table;
+
+            //DataGridViewImageColumn dGVImageColumn = (DataGridViewImageColumn)dataGridView1.Columns[8];
+            //dGVImageColumn.ImageLayout = DataGridViewImageCellLayout.Stretch;
+
             try
             {
                 using (SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM Vehicles", connection))
@@ -88,6 +96,11 @@ namespace BAUTISTA_DAMALERIO_JIMENEZ_IT201_CRUD_DEMO_08
         {
             try
             {
+                if (txtMake.Text.Length == 0 || txtModel.Text.Length == 0)
+                {
+                    throw new Exception();
+                }
+
                 SqlCommand cmd = new SqlCommand("INSERT INTO Vehicles (Make, Model, Year, Price, IsElectric, Color, CreatedDate) VALUES (@Make, @Model, @Year, @Price, @IsElectric, @Color, @CreatedDate)", connection);
 
                 cmd.Parameters.Add("@Make", SqlDbType.NVarChar).Value = txtMake.Text;
@@ -220,14 +233,17 @@ namespace BAUTISTA_DAMALERIO_JIMENEZ_IT201_CRUD_DEMO_08
                 MessageBox.Show("Please select a vehicle to update.");
             }
         }
-        private void btnDelete_Click(object sender, EventArgs e)
+
+        private void btnDelete_Click_1(object sender, EventArgs e)
         {
+            if (
+                MessageBox.Show("Are you sure you want to delete this record?", "Confirm", MessageBoxButtons.OKCancel)
+                == DialogResult.Cancel
+               )
+            {
+                return;
+            }
 
-
-        }
-
-        //private void btnDelete_Click_1(object sender, EventArgs e)
-        //{
         //    // Ensure a row is selected in the DataGridView
         //    if (dataGridView1.SelectedRows.Count > 0)
         //    {
@@ -266,48 +282,6 @@ namespace BAUTISTA_DAMALERIO_JIMENEZ_IT201_CRUD_DEMO_08
         //    {
         //        MessageBox.Show("Please select a vehicle to delete.");
         //    }
-        //}
-
-        private void btnDelete_Click_1(object sender, EventArgs e)
-        {
-            if (dataGridView1.SelectedRows.Count > 0)
-            {
-                DialogResult result = MessageBox.Show("Are you sure you want to delete this vehicle?",
-                    "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-                if (result == DialogResult.Yes)
-                {
-                    int vehicleId = (int)dataGridView1.SelectedRows[0].Cells["VehicleID"].Value;
-
-                    string query = "DELETE FROM Vehicles WHERE VehicleID = @VehicleID";
-
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@VehicleID", vehicleId);
-
-                        try
-                        {
-                            connection.Open();
-                            cmd.ExecuteNonQuery();
-                            MessageBox.Show("Vehicle deleted successfully!");
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Error delete vehicle: " + ex.Message);
-                        }
-                        finally
-                        {
-                            connection.Close();
-                        }
-
-                    }
-                    LoadVehicles();
-                }
-            }
-            else
-            {
-                MessageBox.Show("Please select a vehicle to delete. ");
-            }
         }
 
         private void btnRead_Click(object sender, EventArgs e)
@@ -357,6 +331,24 @@ namespace BAUTISTA_DAMALERIO_JIMENEZ_IT201_CRUD_DEMO_08
                     picVehicleImage.Image = new Bitmap(openFileDialog.FileName);
                 }
             }
+        }
+
+        private void txtYear_Click(object sender, EventArgs e)
+        {
+            txtYear.SelectionStart = 0;
+        }
+
+        private void btnAbout_Click(object sender, EventArgs e)
+        {
+            using (AboutUs ab = new())
+            {
+                ab.ShowDialog();
+            }
+        }
+
+        private void txtPrice_Click(object sender, EventArgs e)
+        {
+            txtPrice.SelectionStart = 0;
         }
 
         private void picVehicleImage_Click(object sender, EventArgs e)
@@ -433,7 +425,5 @@ namespace BAUTISTA_DAMALERIO_JIMENEZ_IT201_CRUD_DEMO_08
             currentTheme = currentTheme == LightTheme ? DarkTheme : LightTheme;
             ApplyTheme(currentTheme);
         }
-
-
     }
 }

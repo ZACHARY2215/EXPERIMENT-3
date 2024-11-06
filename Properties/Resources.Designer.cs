@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BAUTISTA_DAMALERIO_JIMENEZ_IT201_CRUD_DEMO_08.Properties {
+namespace BALAMAN_IT201_CRUD_DEMO_08.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace BAUTISTA_DAMALERIO_JIMENEZ_IT201_CRUD_DEMO_08.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BAUTISTA_DAMALERIO_JIMENEZ_IT201_CRUD_DEMO_08.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BALAMAN_IT201_CRUD_DEMO_08.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

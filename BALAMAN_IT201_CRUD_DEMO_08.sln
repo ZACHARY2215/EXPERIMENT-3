@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PABUALAN_JAYME_VILLACORTA_IT201_CRUD_DEMO_08", "PABUALAN_JAYME_VILLACORTA_IT201_CRUD_DEMO_08.csproj", "{BAC7ECAC-A63D-493D-AE04-C4FE2558B180}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BALAMAN_IT201_CRUD_DEMO_08", "BALAMAN_IT201_CRUD_DEMO_08.csproj", "{BAC7ECAC-A63D-493D-AE04-C4FE2558B180}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
