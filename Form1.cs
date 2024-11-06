@@ -284,48 +284,6 @@ namespace BAUTISTA_DAMALERIO_JIMENEZ_IT201_CRUD_DEMO_08
         //    }
         }
 
-        private void btnDelete_Click_1(object sender, EventArgs e)
-        {
-            if (dataGridView1.SelectedRows.Count > 0)
-            {
-                DialogResult result = MessageBox.Show("Are you sure you want to delete this vehicle?",
-                    "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-                if (result == DialogResult.Yes)
-                {
-                    int vehicleId = (int)dataGridView1.SelectedRows[0].Cells["VehicleID"].Value;
-
-                    string query = "DELETE FROM Vehicles WHERE VehicleID = @VehicleID";
-
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
-                    {
-                        cmd.Parameters.AddWithValue("@VehicleID", vehicleId);
-
-                        try
-                        {
-                            connection.Open();
-                            cmd.ExecuteNonQuery();
-                            MessageBox.Show("Vehicle deleted successfully!");
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Error delete vehicle: " + ex.Message);
-                        }
-                        finally
-                        {
-                            connection.Close();
-                        }
-
-                    }
-                    LoadVehicles();
-                }
-            }
-            else
-            {
-                MessageBox.Show("Please select a vehicle to delete. ");
-            }
-        }
-
         private void btnRead_Click(object sender, EventArgs e)
         {
             string searchTerm = txtSearch.Text.Trim();
