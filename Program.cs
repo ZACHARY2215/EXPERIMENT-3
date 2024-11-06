@@ -1,4 +1,4 @@
-namespace BALAMAN_IT201_CRUD_DEMO_08
+namespace BAUTISTA_DAMALERIO_JIMENEZ_IT201_CRUD_DEMO_08
 {
     internal static class Program
     {
@@ -33,7 +33,7 @@ and database interactions are managed using ADO.NET with SqlConnection and SqlCo
 handling and user feedback through message boxes.
 
 II. Project Tasks:
-
+//5 tasks lng mn dili need tanan ahh payts yawa abi nakog himoon na tanan
 Each group must select at least 5 tasks and implement the necessary modifications to the project. After completing
 the tasks, submit a PDF document as evidence, which includes a brief discussion of the updates your group made.
 
