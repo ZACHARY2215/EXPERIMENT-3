@@ -2,7 +2,7 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Windows.Forms;
 
-namespace BAUTISTA_DAMALERIO_JIMENEZ_IT201_CRUD_DEMO_08
+namespace BALAMAN_IT201_CRUD_DEMO_08
 {
     public partial class Form1 : Form
     {
@@ -43,54 +43,37 @@ namespace BAUTISTA_DAMALERIO_JIMENEZ_IT201_CRUD_DEMO_08
 
         }
 
-        //private void LoadVehicles()
-        //{
-        //    SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM Vehicles", connection);
-        //    DataTable table = new DataTable();
-        //    adapter.Fill(table);
-        //    dataGridView1.DataSource = table;
-
-        //    DataGridViewImageColumn dGVImageColumn = (DataGridViewImageColumn)dataGridView1.Columns[8];
-        //    dGVImageColumn.ImageLayout = DataGridViewImageCellLayout.Stretch;
-
-        //}
-
         private void LoadVehicles()
         {
-            //SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM Vehicles", connection);
-            //DataTable table = new DataTable();
-            //adapter.Fill(table);
-            //dataGridView1.DataSource = table;
+            SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM Vehicles", connection);
+            DataTable table = new DataTable();
+            adapter.Fill(table);
+            dataGridView1.DataSource = table;
 
-            //DataGridViewImageColumn dGVImageColumn = (DataGridViewImageColumn)dataGridView1.Columns[8];
-            //dGVImageColumn.ImageLayout = DataGridViewImageCellLayout.Stretch;
+            DataGridViewImageColumn dGVImageColumn = (DataGridViewImageColumn)dataGridView1.Columns[8];
+            dGVImageColumn.ImageLayout = DataGridViewImageCellLayout.Stretch;
 
-            try
-            {
-                using (SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM Vehicles", connection))
-                {
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-                    dataGridView1.DataSource = table;
+            //try
+            //{
+            //    using (SqlDataAdapter adapter = new SqlDataAdapter("SELECT * FROM Vehicles", connection))
+            //    {
+            //        DataTable table = new DataTable();
+            //        adapter.Fill(table);
+            //        dataGridView1.DataSource = table;
 
-                    if (dataGridView1.Columns.Contains("Image"))
-                    {
-                        DataGridViewImageColumn dGVImageColumn = (DataGridViewImageColumn)dataGridView1.Columns["Image"];
-                        dGVImageColumn.ImageLayout = DataGridViewImageCellLayout.Stretch;
+            //        if (dataGridView1.Columns.Contains("Image"))
+            //        {
+            //            DataGridViewImageColumn dGVImageColumn = (DataGridViewImageColumn)dataGridView1.Columns["Image"];
+            //            dGVImageColumn.ImageLayout = DataGridViewImageCellLayout.Stretch;
 
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading vehicles" + ex.Message);
-            }
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("Error loading vehicles" + ex.Message);
         }
 
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void btnAdd_Click_1(object sender, EventArgs e)
         {
@@ -244,44 +227,44 @@ namespace BAUTISTA_DAMALERIO_JIMENEZ_IT201_CRUD_DEMO_08
                 return;
             }
 
-        //    // Ensure a row is selected in the DataGridView
-        //    if (dataGridView1.SelectedRows.Count > 0)
-        //    {
-        //        // Get the VehicleID of the selected row
-        //        int vehicleId = (int)dataGridView1.SelectedRows[0].Cells["VehicleID"].Value;
+            // Ensure a row is selected in the DataGridView
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                // Get the VehicleID of the selected row
+                int vehicleId = (int)dataGridView1.SelectedRows[0].Cells["VehicleID"].Value;
 
-        //        // Prepare the SQL command to delete the vehicle
-        //        string query = "DELETE FROM Vehicles WHERE VehicleID = @VehicleID";
+                // Prepare the SQL command to delete the vehicle
+                string query = "DELETE FROM Vehicles WHERE VehicleID = @VehicleID";
 
-        //        using (SqlCommand cmd = new SqlCommand(query, connection))
-        //        {
-        //            // Add parameter to the command
-        //            cmd.Parameters.AddWithValue("@VehicleID", vehicleId);
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    // Add parameter to the command
+                    cmd.Parameters.AddWithValue("@VehicleID", vehicleId);
 
-        //            try
-        //            {
-        //                // Open connection and execute the command
-        //                connection.Open();
-        //                cmd.ExecuteNonQuery();
-        //                MessageBox.Show("Vehicle deleted successfully!");
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                MessageBox.Show("Error deleting vehicle: " + ex.Message);
-        //            }
-        //            finally
-        //            {
-        //                connection.Close(); // Ensure the connection is closed
-        //            }
-        //        }
+                    try
+                    {
+                        // Open connection and execute the command
+                        connection.Open();
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Vehicle deleted successfully!");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error deleting vehicle: " + ex.Message);
+                    }
+                    finally
+                    {
+                        connection.Close(); // Ensure the connection is closed
+                    }
+                }
 
-        //        // Reload the data to reflect changes
-        //        LoadVehicles();
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Please select a vehicle to delete.");
-        //    }
+                // Reload the data to reflect changes
+                LoadVehicles();
+            }
+            else
+            {
+                MessageBox.Show("Please select a vehicle to delete.");
+            }
         }
 
         private void btnRead_Click(object sender, EventArgs e)
@@ -366,10 +349,9 @@ namespace BAUTISTA_DAMALERIO_JIMENEZ_IT201_CRUD_DEMO_08
             txtColor.Clear();
             dateTimePicker1.Value = DateTime.Now;
             picVehicleImage.Image = null;
-
         }
 
-        private void Button1_Click(object sender, EventArgs e)
+        private void btnClear_Click(object sender, EventArgs e)
         {
             ClearFields();
         }
