@@ -1,4 +1,4 @@
-﻿namespace BAUTISTA_DAMALERIO_JIMENEZ_IT201_CRUD_DEMO_08
+﻿namespace BALAMAN_IT201_CRUD_DEMO_08
 {
     partial class Form1
     {
@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             dataGridView1 = new DataGridView();
             btnAdd = new Button();
             btnRead = new Button();
@@ -54,7 +53,7 @@
             txtYear = new MaskedTextBox();
             btnAbout = new Button();
             txtPrice = new MaskedTextBox();
-            clear = new Button();
+            btnClear = new Button();
             ToggleTheme1 = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)fileSystemWatcher1).BeginInit();
@@ -283,7 +282,7 @@
             // 
             // txtPrice
             // 
-            txtPrice.Location = new Point(364, 365);
+            txtPrice.Location = new Point(364, 360);
             txtPrice.Mask = "99999";
             txtPrice.Name = "txtPrice";
             txtPrice.PromptChar = ' ';
@@ -291,19 +290,20 @@
             txtPrice.TabIndex = 25;
             txtPrice.ValidatingType = typeof(int);
             txtPrice.Click += txtPrice_Click;
-            // clear
             // 
-            clear.Location = new Point(364, 283);
-            clear.Name = "clear";
-            clear.Size = new Size(106, 37);
-            clear.TabIndex = 23;
-            clear.Text = "Clear";
-            clear.UseVisualStyleBackColor = true;
-            clear.Click += Button1_Click;
+            // btnClear
+            // 
+            btnClear.Location = new Point(364, 283);
+            btnClear.Name = "btnClear";
+            btnClear.Size = new Size(106, 37);
+            btnClear.TabIndex = 23;
+            btnClear.Text = "Clear";
+            btnClear.UseVisualStyleBackColor = true;
+            btnClear.Click += btnClear_Click;
             // 
             // ToggleTheme1
             // 
-            ToggleTheme1.Location = new Point(874, 16);
+            ToggleTheme1.Location = new Point(779, 5);
             ToggleTheme1.Name = "ToggleTheme1";
             ToggleTheme1.Size = new Size(106, 37);
             ToggleTheme1.TabIndex = 24;
@@ -319,7 +319,7 @@
             Controls.Add(btnAbout);
             Controls.Add(txtYear);
             Controls.Add(ToggleTheme1);
-            Controls.Add(clear);
+            Controls.Add(btnClear);
             Controls.Add(pictureBox1);
             Controls.Add(btnBrowseImage);
             Controls.Add(picVehicleImage);
@@ -342,7 +342,6 @@
             Controls.Add(btnAdd);
             Controls.Add(dataGridView1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "BAUTISTA_DAMALERIO_JIMENEZ_IT201_CRUD_DEMO_08";
@@ -382,7 +381,7 @@
         private MaskedTextBox txtYear;
         private Button btnAbout;
         private MaskedTextBox txtPrice;
-        private Button clear;
+        private Button btnClear;
         private Button ToggleTheme1;
     }
 }

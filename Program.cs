@@ -1,4 +1,4 @@
-namespace BAUTISTA_DAMALERIO_JIMENEZ_IT201_CRUD_DEMO_08
+namespace BALAMAN_IT201_CRUD_DEMO_08
 {
     internal static class Program
     {
@@ -46,7 +46,7 @@ are filled before allowing the record to be added.
 [/] Task 3.1.3 - Add Confirmation for Delete. Before deleting a record, display a confirmation dialog to ensure the user really wants to delete
 the selected vehicle.
 
-[ ] Task 3.1.4 - Add a Color Theme. Implement a consistent color theme for the entire form (background color, button colors, and text colors).
+[/] Task 3.1.4 - Add a Color Theme. Implement a consistent color theme for the entire form (background color, button colors, and text colors).
 Allow users to switch between light and dark themes to improve the user interface experience.
 
 [ ] Task 3.1.5 - Add an Application Icon. Update the form to include a custom icon in the title bar and taskbar, giving the application a more
